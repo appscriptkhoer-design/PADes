@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <!-- META BARU: Menghubungkan ke manifest -->
+  <link rel="manifest" href="manifest.json">
+  <!-- META BARU: Memberi warna pada address bar browser di mobile -->
+  <meta name="theme-color" content="#005a31">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* ... Semua CSS Anda yang sudah ada, tidak perlu diubah ... */
+  </style>
+</head>
+<body>
+
+  <!-- ... Semua HTML Anda yang sudah ada, tidak perlu diubah ... -->
+  
+  <script>
+    // --- GANTI URL DI BAWAH INI DENGAN URL DEPLOYMENT ANDA ---
+    // ... URL Anda tetap di sini ...
+
+    const menuView = document.getElementById('menu-view');
+    const appView = document.getElementById('app-view');
+    const iframe = document.getElementById('app-frame');
+
+    // --- FUNGSI showApp DIMODIFIKASI ---
+    function showApp(url) {
+      // Cek status koneksi menggunakan API browser
+      if (navigator.onLine) {
+        // Jika ONLINE, jalankan seperti biasa
+        menuView.style.display = 'none';
+        appView.style.display = 'block';
+        iframe.src = url;
+      } else {
+        // Jika OFFLINE, tampilkan notifikasi
+        alert('Anda sedang offline. Koneksi internet dibutuhkan untuk membuka aplikasi ini.');
+      }
+    }
+
+    // --- SCRIPT BARU UNTUK MEREGISTRASIKAN SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
